@@ -1,7 +1,7 @@
 <?php
+namespace view;
 
 class DateTimeView {
-
 
 	public function show() {
 		//Saturday, the 17th of September 2016, The time is
