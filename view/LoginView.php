@@ -121,6 +121,7 @@ class LoginView {
 
 		if ($username == $this->_USERNAME && $password == $this->_PASSWORD) {
 			$correct = true;
+			$_SESSION["isLoggedIn"] = true;
 		}
 
 		return $correct;
