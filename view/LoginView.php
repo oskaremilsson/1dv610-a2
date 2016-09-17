@@ -21,17 +21,22 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response() {
-		$message = '';
+		$message = "";
+		$name = "";
 
-		if (isset($_POST[self::$name])) {
-				$message = "Username is missing";
+		if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
+				if ($_POST[self::$name] == "") {
+					$message = "Username is missing";
+				}
+
+				else if ($_POST[self::$password] == "") {
+					$message = "Password is missing";
+				}
+				
+				$name = $_POST[self::$name];
 		}
 
-		if (isset($_POST[self::$password])) {
-				$message = "Password is missing";
-		}
-
-		$response = $this->generateLoginFormHTML($message);
+		$response = $this->generateLoginFormHTML($message, $name);
 		//$response .= $this->generateLogoutButtonHTML($message);
 		return $response;
 	}
@@ -55,7 +60,7 @@ class LoginView {
 	* @param $message, String output message
 	* @return  void, BUT writes to standard output!
 	*/
-	private function generateLoginFormHTML($message) {
+	private function generateLoginFormHTML($message, $name) {
 		return '
 			<form method="post" >
 				<fieldset>
@@ -63,8 +68,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
-
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $name . '" />
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
 
