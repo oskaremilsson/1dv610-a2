@@ -27,6 +27,10 @@ class LoginView {
 				$message = "Username is missing";
 		}
 
+		if (isset($_POST[self::$password])) {
+				$message = "Password is missing";
+		}
+
 		$response = $this->generateLoginFormHTML($message);
 		//$response .= $this->generateLogoutButtonHTML($message);
 		return $response;
