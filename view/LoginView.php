@@ -11,7 +11,8 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 
-
+	private $_PASSWORD = "Password";
+	private $_USERNAME = "Admin";
 
 	/**
 	 * Create HTTP response
@@ -21,9 +22,20 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response() {
-		$message = "";
+		$message = $this->checkInput();
 		$name = "";
+		if (isset($_POST[self::$name])) {
+			$name = $_POST[self::$name];
+		}
 
+
+		$response = $this->generateLoginFormHTML($message, $name);
+		//$response .= $this->generateLogoutButtonHTML($message);
+		return $response;
+	}
+
+	private function checkInput() {
+		$message = "";
 		if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
 				if ($_POST[self::$name] == "") {
 					$message = "Username is missing";
@@ -32,13 +44,20 @@ class LoginView {
 				else if ($_POST[self::$password] == "") {
 					$message = "Password is missing";
 				}
-				
-				$name = $_POST[self::$name];
+
+				else {
+					if($this->checkAuthentication($_POST[self::$name], $_POST[self::$password])) {
+						//LOGIN SUCCESSFUL
+						$message = "Welcome";
+					}
+					else {
+						//LOGIN FAILED
+						$message = "Wrong name or password";
+					}
+				}
 		}
 
-		$response = $this->generateLoginFormHTML($message, $name);
-		//$response .= $this->generateLogoutButtonHTML($message);
-		return $response;
+		return $message;
 	}
 
 	/**
@@ -95,6 +114,16 @@ class LoginView {
 	private function getRequestUserKeep() {
 		//RETURN REQUEST VARIABLE: PASSWORD
 		return $_POST[self::$keep];
+	}
+
+	private function checkAuthentication($username, $password) {
+		$correct = false;
+
+		if ($username == $this->_USERNAME && $password == $this->_PASSWORD) {
+			$correct = true;
+		}
+
+		return $correct;
 	}
 
 }
