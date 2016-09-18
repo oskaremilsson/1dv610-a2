@@ -22,8 +22,16 @@ if(isset($_SESSION["isLoggedIn"])) {
   if (!$_SESSION["isLoggedIn"]) {
     $message = $v->checkInput();
   }
-  
+
   $isLoggedIn = $_SESSION["isLoggedIn"];
+}
+else {
+    $message = $v->checkInput();
+    if ($message == "Welcome") {
+      $isLoggedIn = true;
+    }
+    //$isLoggedIn = $_SESSION["isLoggedIn"];
+
 }
 
 $lv->render($isLoggedIn, $v, $dtv, $message);

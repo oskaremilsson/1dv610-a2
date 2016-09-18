@@ -117,6 +117,7 @@ class LoginView {
 
 	private function checkAuthentication($username, $password) {
 		$correct = false;
+		$_SESSION["isLoggedIn"] = false;
 
 		if ($username == $this->_USERNAME && $password == $this->_PASSWORD) {
 			$correct = true;
