@@ -18,11 +18,11 @@ $lv = new \view\LayoutView();
 $isLoggedIn = false;
 $message = "";
 
-if (!$_SESSION["isLoggedIn"]) {
-  $message = $v->checkInput();
-}
-
 if(isset($_SESSION["isLoggedIn"])) {
+  if (!$_SESSION["isLoggedIn"]) {
+    $message = $v->checkInput();
+  }
+  
   $isLoggedIn = $_SESSION["isLoggedIn"];
 }
 
