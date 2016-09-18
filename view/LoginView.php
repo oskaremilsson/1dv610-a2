@@ -21,8 +21,7 @@ class LoginView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response() {
-		$message = $this->checkInput();
+	public function response($message) {
 		$name = "";
 		if (isset($_POST[self::$name])) {
 			$name = $_POST[self::$name];
@@ -34,7 +33,7 @@ class LoginView {
 		return $response;
 	}
 
-	private function checkInput() {
+	public function checkInput() {
 		$message = "";
 		if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
 				if ($_POST[self::$name] == "") {

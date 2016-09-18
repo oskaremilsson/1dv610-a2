@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 //INCLUDE THE FILES NEEDED...
 require_once('view/LoginView.php');
 require_once('view/DateTimeView.php');
@@ -18,8 +17,11 @@ $lv = new \view\LayoutView();
 
 $isLoggedIn = false;
 
+
+$message = $v->checkInput();
+
 if(isset($_SESSION["isLoggedIn"])) {
   $isLoggedIn = $_SESSION["isLoggedIn"];
 }
 
-$lv->render($isLoggedIn, $v, $dtv);
+$lv->render($isLoggedIn, $v, $dtv, $message);
