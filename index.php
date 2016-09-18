@@ -16,9 +16,11 @@ $dtv = new \view\DateTimeView();
 $lv = new \view\LayoutView();
 
 $isLoggedIn = false;
+$message = "";
 
-
-$message = $v->checkInput();
+if (!$_SESSION["isLoggedIn"]) {
+  $message = $v->checkInput();
+}
 
 if(isset($_SESSION["isLoggedIn"])) {
   $isLoggedIn = $_SESSION["isLoggedIn"];
