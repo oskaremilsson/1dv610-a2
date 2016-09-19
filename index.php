@@ -57,7 +57,7 @@ else {
 }
 
 //if cookie password wrong logout
-  if(isset($_COOKIE['LoginView::CookiePassword'])) {
+  if(isset($_COOKIE['LoginView::CookiePassword']) && isset($_COOKIE['PHPSESSID'])) {
      if ($_COOKIE['LoginView::CookiePassword'] != md5($_COOKIE['PHPSESSID'])) {
        $lc->logout();
        $isLoggedIn = false;
