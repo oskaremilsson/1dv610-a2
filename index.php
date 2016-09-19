@@ -33,8 +33,7 @@ if (isset($_SESSION["isLoggedIn"])) {
 else {
   if ($lc->isRequest($v->getLoginID())) {
     //login form sent, handle it
-    $lc->login();
-    $isLoggedIn = true;
+    $isLoggedIn = $lc->login();
     $message = $lc->getMessage();
   }
 }

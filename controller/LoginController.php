@@ -24,15 +24,21 @@ class Logincontroller {
   }
 
   public function login() {
+    $correct = false;
+
+    $this->checkInput();
+
     if (isset($_POST[$this->usernameID]) && isset($_POST[$this->passwordID])) {
       $username = $_POST[$this->usernameID];
       $password = $_POST[$this->passwordID];
 		  if ($username == $this->_USERNAME && $password == $this->_PASSWORD) {
 			   $_SESSION["isLoggedIn"] = true;
+         $correct = true;
+         $this->message = "Welcome";
 		  }
     }
 
-    $this->checkInput();
+    return $correct;
   }
 
   public function logout() {
@@ -50,14 +56,8 @@ class Logincontroller {
 				}
 
 				else {
-					if($_SESSION["isLoggedIn"]) {
-						//LOGIN SUCCESSFUL
-						$this->message = "Welcome";
-					}
-					else {
-						//LOGIN FAILED
-						$this->message = "Wrong name or password";
-					}
+					//LOGIN FAILED
+					$this->message = "Wrong name or password";
 				}
 		}
 	}
