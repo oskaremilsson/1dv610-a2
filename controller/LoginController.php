@@ -88,11 +88,10 @@ class Logincontroller {
 
   public function handleFlashMessage() {
     //show and unset flashmessage cookie
-    if (isset($_COOKIE['flashMessage'])) {
+    if (isset($_COOKIE['flashMessage']) && !isset($_SESSION['isLoggedIn'])) {
       $this->message = $_COOKIE['flashMessage'];
+      setcookie("flashMessage", false , time()-1);
     }
-
-    setcookie("flashMessage", false , time()-1);
   }
 
 }
