@@ -6,7 +6,7 @@ require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
 require_once('controller/LoginController.php');
 
-static $CookiePassword = "sgfshkfjhsgfs435643";
+$CookiePassword = $_SESSION["PHPSESSID"];
 
 //MAKE SURE ERRORS ARE SHOWN... MIGHT WANT TO TURN THIS OFF ON A PUBLIC SERVER
 error_reporting(E_ALL);
@@ -61,6 +61,7 @@ else {
      if ($_COOKIE['LoginView::CookiePassword'] != $CookiePassword) {
        $lc->logout();
        $isLoggedIn = false;
+       $message = "Wrong information in cookies";
      }
   }
 }
