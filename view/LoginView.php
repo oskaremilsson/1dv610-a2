@@ -21,15 +21,24 @@ class LoginView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response($message) {
+	public function response($isLoggedIn, $message) {
 		$name = "";
 		if (isset($_POST[self::$name])) {
 			$name = $_POST[self::$name];
 		}
 
+		if(isset($_POST[self::$logout])){
+			$this->logout();
+			$isLoggedIn = false;
+		}
 
-		$response = $this->generateLoginFormHTML($message, $name);
-		//$response .= $this->generateLogoutButtonHTML($message);
+		if ($isLoggedIn) {
+			$response = $this->generateLogoutButtonHTML($message);
+		}
+		else {
+			$response = $this->generateLoginFormHTML($message, $name);
+		}
+
 		return $response;
 	}
 
@@ -57,6 +66,10 @@ class LoginView {
 		}
 
 		return $message;
+	}
+
+	private function logout(){
+		session_destroy();
 	}
 
 	/**

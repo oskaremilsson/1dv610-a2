@@ -27,6 +27,7 @@ if(isset($_SESSION["isLoggedIn"])) {
 }
 else {
     $message = $v->checkInput();
+    //fulkod
     if ($message == "Welcome") {
       $isLoggedIn = true;
     }
