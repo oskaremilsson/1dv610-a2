@@ -56,7 +56,6 @@ class Logincontroller {
   }
 
   public function logout() {
-    echo "loggin out";
     unset($_SESSION['isLoggedIn']);
     setcookie("isLoggedIn", false , time()-1);
     $this->message = "Bye bye!";
