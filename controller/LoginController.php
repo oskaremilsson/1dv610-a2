@@ -11,12 +11,14 @@ class Logincontroller {
   private $message = "";
   private $usernameID;
   private $passwordID;
+  private $keepID;
 
   function __construct(\view\LoginView $v) {
     $this->v = $v;
 
     $this->usernameID = $this->v->getUserNameID();
     $this->passwordID = $this->v->getUserPasswordID();
+    $this->keepID = $this->v->getKeepID();
   }
 
   public function isRequest($name) {
@@ -35,14 +37,29 @@ class Logincontroller {
 			   $_SESSION["isLoggedIn"] = true;
          $correct = true;
          $this->message = "Welcome";
+         $this->handleKeep();
 		  }
     }
 
     return $correct;
   }
 
+  private function handleKeep() {
+    if (isset($_POST[$this->keepID])) {
+      if ($_POST[$this->keepID]) {
+        //keep user loggedin
+        setcookie("isLoggedIn", true, time() + (86400 * 30), "/");
+        setcookie("flashMessage", "Welcome back with cookie" , time() + (86400 * 30), "/");
+        $this->message .= " and you will be remembered";
+      }
+    }
+  }
+
   public function logout() {
+    echo "loggin out";
     unset($_SESSION['isLoggedIn']);
+    setcookie("isLoggedIn", false , time()-1);
+    $this->message = "Bye bye!";
   }
 
   public function checkInput() {
@@ -68,6 +85,15 @@ class Logincontroller {
 
   public function getMessage() {
     return $this->message;
+  }
+
+  public function handleFlashMessage() {
+    //show and unset flashmessage cookie
+    if (isset($_COOKIE['flashMessage'])) {
+      $this->message = $_COOKIE['flashMessage'];
+    }
+
+    setcookie("flashMessage", false , time()-1);
   }
 
 }

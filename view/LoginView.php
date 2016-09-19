@@ -106,9 +106,9 @@ class LoginView {
 		return self::$logout;
 	}
 
-	public function getRequestUserKeepID() {
+	public function getKeepID() {
 		//RETURN REQUEST VARIABLE: PASSWORD
-		return $_POST[self::$keep];
+		return self::$keep;
 	}
 
 	/*private function checkAuthentication($username, $password) {

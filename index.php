@@ -20,14 +20,27 @@ $lc = new \controller\LoginController($v);
 $isLoggedIn = false;
 $message = "";
 
-if (isset($_SESSION["isLoggedIn"])) {
+if (isset($_COOKIE['isLoggedIn'])) {
+  //cookie with isLoggedIn exist
+  $isLoggedIn = $_COOKIE['isLoggedIn'];
+  $lc->handleFlashMessage();
+
+  if ($lc->isRequest($v->getLogoutID())) {
+    //logout form sent, handle it
+    $lc->logout();
+    $isLoggedIn = false;
+  }
+
+  $message = $lc->getMessage();
+}
+else if (isset($_SESSION["isLoggedIn"])) {
   $isLoggedIn = $_SESSION["isLoggedIn"];
 
   if ($lc->isRequest($v->getLogoutID())) {
     //logout form sent, handle it
     $lc->logout();
     $isLoggedIn = false;
-    $message = "Bye bye!";
+    $message = $lc->getMessage();
   }
 }
 else {
