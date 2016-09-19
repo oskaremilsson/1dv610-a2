@@ -6,10 +6,10 @@ require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
 require_once('controller/LoginController.php');
 
-if (isset($_COOKIE['PHPSESSID'])) {
+//if (isset($_COOKIE['PHPSESSID'])) {
   $CookiePassword = md5("test"); //$_COOKIE['PHPSESSID']
   setcookie("LoginView::CookiePassword", $CookiePassword, time() + (86400 * 30), "/");
-}
+//}
 
 //MAKE SURE ERRORS ARE SHOWN... MIGHT WANT TO TURN THIS OFF ON A PUBLIC SERVER
 error_reporting(E_ALL);
