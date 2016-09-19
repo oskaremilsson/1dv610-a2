@@ -57,15 +57,13 @@ else {
 }
 
 //if cookie password wrong logout
-{
   if(isset($_COOKIE['LoginView::CookiePassword'])) {
-     if (md5($_COOKIE['LoginView::CookiePassword']) != $CookiePassword) {
+     if ($_COOKIE['LoginView::CookiePassword'] != $CookiePassword) {
        $lc->logout();
        $isLoggedIn = false;
        $message = "Wrong information in cookies";
      }
   }
-}
 
 
 $response = $v->response($isLoggedIn, $message);
