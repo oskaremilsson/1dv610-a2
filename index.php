@@ -7,7 +7,7 @@ require_once('view/LayoutView.php');
 require_once('controller/LoginController.php');
 
 if (isset($_COOKIE['PHPSESSID'])) {
-  $CookiePassword = md5($_COOKIE['PHPSESSID']);
+  $CookiePassword = md5("test"); //$_COOKIE['PHPSESSID']
   setcookie("LoginView::CookiePassword", $CookiePassword, time() + (86400 * 30), "/");
 }
 
@@ -57,8 +57,9 @@ else {
 }
 
 //if cookie password wrong logout
-  if(isset($_COOKIE['LoginView::CookiePassword']) && isset($_COOKIE['PHPSESSID'])) {
-     if ($_COOKIE['LoginView::CookiePassword'] != md5($_COOKIE['PHPSESSID'])) {
+  if(isset($_COOKIE['LoginView::CookiePassword'])) {
+
+     if ($_COOKIE['LoginView::CookiePassword'] != md5("test")) {
        $lc->logout();
        $isLoggedIn = false;
        $message = "Wrong information in cookies";
