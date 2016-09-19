@@ -6,7 +6,10 @@ require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
 require_once('controller/LoginController.php');
 
-$CookiePassword = $_SESSION["PHPSESSID"];
+if (isset($_COOKIE['PHPSESSID'])) {
+  $CookiePassword = md5($_COOKIE['PHPSESSID']);
+  setcookie("LoginView::CookiePassword", $CookiePassword, time() + (86400 * 30), "/");
+}
 
 //MAKE SURE ERRORS ARE SHOWN... MIGHT WANT TO TURN THIS OFF ON A PUBLIC SERVER
 error_reporting(E_ALL);
@@ -21,8 +24,6 @@ $lc = new \controller\LoginController($v);
 
 $isLoggedIn = false;
 $message = "";
-
-setcookie("LoginView::CookiePassword", $CookiePassword, time() + (86400 * 30), "/");
 
 if (isset($_COOKIE['isLoggedIn'])) {
   //cookie with isLoggedIn exist
@@ -58,7 +59,7 @@ else {
 //if cookie password wrong logout
 {
   if(isset($_COOKIE['LoginView::CookiePassword'])) {
-     if ($_COOKIE['LoginView::CookiePassword'] != $CookiePassword) {
+     if (md5($_COOKIE['LoginView::CookiePassword']) != $CookiePassword) {
        $lc->logout();
        $isLoggedIn = false;
        $message = "Wrong information in cookies";
