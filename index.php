@@ -55,5 +55,3 @@ else {
 
 $response = $v->response($isLoggedIn, $message);
 $lv->render($isLoggedIn, $v, $dtv, $message, $response);
-
-var_dump($_SESSION);
