@@ -48,8 +48,8 @@ class Logincontroller {
     if (isset($_POST[$this->keepID])) {
       if ($_POST[$this->keepID]) {
         //keep user loggedin
-        setcookie("isLoggedIn", true, time() + (86400 * 30), "/");
-        setcookie("flashMessage", "Welcome back with cookie" , time() + (86400 * 30), "/");
+        setcookie("isLoggedIn", true, time() + (86400 * 30), "/", "oskaremilsson.se");
+        setcookie("flashMessage", "Welcome back with cookie" , time() + (86400 * 30), "/", "oskaremilsson.se");
         $this->message .= " and you will be remembered";
       }
     }
