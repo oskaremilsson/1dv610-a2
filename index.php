@@ -10,29 +10,38 @@ require_once('controller/LoginController.php');
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
+
 //CREATE OBJECTS OF THE VIEWS
 $v = new \view\LoginView();
 $dtv = new \view\DateTimeView();
 $lv = new \view\LayoutView();
+$lc = new \controller\LoginController($v);
 
 $isLoggedIn = false;
 $message = "";
 
-if(isset($_SESSION["isLoggedIn"])) {
-  if (!$_SESSION["isLoggedIn"]) {
-    $message = $v->checkInput();
-  }
-
+if (isset($_SESSION["isLoggedIn"])) {
   $isLoggedIn = $_SESSION["isLoggedIn"];
+
+  if ($lc->isRequest($v->getLogoutID())) {
+    //logout form sent, handle it
+    $lc->logout();
+    $isLoggedIn = false;
+    $message = "Bye bye!";
+  }
 }
 else {
-    $message = $v->checkInput();
-    //fulkod
-    if ($message == "Welcome") {
-      $isLoggedIn = true;
-    }
-    //$isLoggedIn = $_SESSION["isLoggedIn"];
-
+  if ($lc->isRequest($v->getLoginID())) {
+    //login form sent, handle it
+    $lc->login();
+    $isLoggedIn = true;
+    $message = $lc->getMessage();
+  }
 }
 
-$lv->render($isLoggedIn, $v, $dtv, $message);
+
+
+$response = $v->response($isLoggedIn, $message);
+$lv->render($isLoggedIn, $v, $dtv, $message, $response);
+
+var_dump($_SESSION);

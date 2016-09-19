@@ -27,10 +27,11 @@ class LoginView {
 			$name = $_POST[self::$name];
 		}
 
-		if(isset($_POST[self::$logout])){
+		/*if(isset($_POST[self::$logout])){
 			$this->logout();
 			$isLoggedIn = false;
-		}
+			$message = "Bye bye!";
+		}*/
 
 		if ($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML($message);
@@ -40,32 +41,6 @@ class LoginView {
 		}
 
 		return $response;
-	}
-
-	public function checkInput() {
-		$message = "";
-		if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
-				if ($_POST[self::$name] == "") {
-					$message = "Username is missing";
-				}
-
-				else if ($_POST[self::$password] == "") {
-					$message = "Password is missing";
-				}
-
-				else {
-					if($this->checkAuthentication($_POST[self::$name], $_POST[self::$password])) {
-						//LOGIN SUCCESSFUL
-						$message = "Welcome";
-					}
-					else {
-						//LOGIN FAILED
-						$message = "Wrong name or password";
-					}
-				}
-		}
-
-		return $message;
 	}
 
 	private function logout(){
@@ -113,22 +88,30 @@ class LoginView {
 	}
 
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	private function getRequestUserName() {
+	public function getUserNameID() {
 		//RETURN REQUEST VARIABLE: USERNAME
-		return $_POST[self::$name];
+		return self::$name;
 	}
 
-	private function getRequestUserPassword() {
+	public function getUserPasswordID() {
 		//RETURN REQUEST VARIABLE: PASSWORD
-		return $_POST[self::$password];
+		return self::$password;
 	}
 
-	private function getRequestUserKeep() {
+	public function getLoginID() {
+		return self::$login;
+	}
+
+	public function getLogoutID() {
+		return self::$logout;
+	}
+
+	public function getRequestUserKeepID() {
 		//RETURN REQUEST VARIABLE: PASSWORD
 		return $_POST[self::$keep];
 	}
 
-	private function checkAuthentication($username, $password) {
+	/*private function checkAuthentication($username, $password) {
 		$correct = false;
 		$_SESSION["isLoggedIn"] = false;
 
@@ -138,6 +121,6 @@ class LoginView {
 		}
 
 		return $correct;
-	}
+	}*/
 
 }
