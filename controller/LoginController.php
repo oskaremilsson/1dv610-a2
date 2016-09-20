@@ -34,6 +34,7 @@ class Logincontroller {
       $username = $_POST[$this->usernameID];
       $password = $_POST[$this->passwordID];
 		  if ($username == $this->_USERNAME && $password == $this->_PASSWORD) {
+        //TODO:change this to db-check
 			   $_SESSION["isLoggedIn"] = true;
          $correct = true;
          $this->message = "Welcome";
@@ -77,10 +78,6 @@ class Logincontroller {
 				}
 		}
 	}
-
-  public function getView() {
-    return $this->v->response("test");
-  }
 
   public function getMessage() {
     return $this->message;
