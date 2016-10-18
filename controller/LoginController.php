@@ -2,6 +2,7 @@
 namespace controller;
 
 require_once('view/LoginView.php');
+require_once('model/DatabaseModel.php');
 
 class Logincontroller {
   private $_PASSWORD = "Password";
@@ -12,9 +13,12 @@ class Logincontroller {
   private $usernameID;
   private $passwordID;
   private $keepID;
+  private $database;
 
-  function __construct(\view\LoginView $v) {
+  function __construct(\view\LoginView $v, \model\dataBaseModel $database) {
     $this->v = $v;
+    $this->database = $database;
+    $this->database->connectToDatabase();
 
     $this->usernameID = $this->v->getUserNameID();
     $this->passwordID = $this->v->getUserPasswordID();
@@ -33,16 +37,24 @@ class Logincontroller {
     if (isset($_POST[$this->usernameID]) && isset($_POST[$this->passwordID])) {
       $username = $_POST[$this->usernameID];
       $password = $_POST[$this->passwordID];
-		  if ($username == $this->_USERNAME && $password == $this->_PASSWORD) {
+		  /*if ($username == $this->_USERNAME && $password == $this->_PASSWORD) {
         //TODO:change this to db-check
 			   $_SESSION["isLoggedIn"] = true;
          $correct = true;
          $this->message = "Welcome";
          $this->handleKeep();
-		  }
+		  }*/
+
+      if ($this->database->checkCredentials($username, $password)) {
+        $_SESSION["isLoggedIn"] = true;
+        $correct = true;
+        $this->message = "Welcome";
+        $this->handleKeep();
+      }
+
     }
 
-    return $correct;
+    //return $correct;
   }
 
   private function handleKeep() {
