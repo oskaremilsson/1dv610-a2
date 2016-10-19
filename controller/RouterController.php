@@ -39,11 +39,20 @@ class RouterController {
         //new user posted, get the user from view
         $username = $this->registerView->getUserName();
         $password = $this->registerView->getPassword();
-        $this->registerController->registerNewUser($username, $password);
+        if($this->registerController->registerNewUser($username, $password)) {
+          //register sucess route to login with new username
+          $response = $this->loginView->responseNewUser($username);
+        }
+        else {
+          $this->message = $this->registerController->getMessage();
+          $response = $this->registerView->response($this->message, $username);
+        }
       }
-
-      $this->message = $this->registerController->getMessage();
-      $response = $this->registerView->response($this->message, $username);
+      else {
+          $this->message = $this->registerController->getMessage();
+          $response = $this->registerView->response($this->message, $username);
+      }
+      $this->layoutView->render($this->isLoggedIn, $this->loginView, $this->dateTimeView, $this->message, $response);
     }
     else {
       $this->checkLoggedInStatus();
@@ -56,8 +65,8 @@ class RouterController {
       }
 
       $response = $this->loginView->response($this->isLoggedIn, $this->message);
+      $this->layoutView->render($this->isLoggedIn, $this->loginView, $this->dateTimeView, $this->message, $response);
     }
-    $this->layoutView->render($this->isLoggedIn, $this->loginView, $this->dateTimeView, $this->message, $response);
   }
 
   private function checkCookiePassword() {

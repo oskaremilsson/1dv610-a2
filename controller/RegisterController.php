@@ -19,6 +19,10 @@ class RegisterController {
     if($this->checkInput()) {
       if(!$this->database->registerNewUser($username, $password)) {
         $this->message = "User exists, pick another username.";
+        return false;
+      }
+      else {
+        return true;
       }
     }
   }

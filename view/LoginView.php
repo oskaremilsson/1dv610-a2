@@ -48,6 +48,14 @@ class LoginView {
 		return $response;
 	}
 
+/*
+Responde function to use when a new user is registred
+*/
+	public function responseNewUser($name) {
+		$response = $this->generateLoginFormHTML("", $name);
+		return $response;
+	}
+
 	private function logout(){
 		session_destroy();
 	}
