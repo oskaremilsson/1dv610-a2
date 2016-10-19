@@ -40,6 +40,8 @@ class RouterController {
         $password = $this->registerView->getPassword();
         $this->registerController->registerNewUser($username, $password);
       }
+
+      $this->message = $this->registerController->getMessage();
       $response = $this->registerView->response($this->message);
     }
     else {

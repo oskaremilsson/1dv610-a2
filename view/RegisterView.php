@@ -7,7 +7,7 @@ class RegisterView {
 	private static $name = 'RegisterView::UserName';
 	private static $password = 'RegisterView::Password';
 	private static $passwordRepeat = 'RegisterView::PasswordRepeat';
-	private static $message = 'LoginView::Message';
+	private static $message = 'RegisterView::Message';
   /*
 	//Cookie settings
 	private static $daysInSeconds = 86400;
@@ -42,15 +42,17 @@ class RegisterView {
 	*/
 	private function generateRegisterFormHTML($message) {
 		return '
+
+    <a href="/">Back to login</a>
 			<form method="post" >
 				<fieldset>
 					<legend>Register</legend>
 					<p id="' . self::$message . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" /></br>
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" /><br>
 					<label for="' . self::$password . '">Password :</label>
-					<input type="password" id="' . self::$password . '" name="' . self::$password . '" /></br>
+					<input type="password" id="' . self::$password . '" name="' . self::$password . '" /><br>
           <label for="' . self::$passwordRepeat . '">Repeat password :</label>
 					<input type="password" id="' . self::$passwordRepeat . '" name="' . self::$passwordRepeat . '" />
 
