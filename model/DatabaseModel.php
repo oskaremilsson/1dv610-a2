@@ -35,7 +35,7 @@ class DatabaseModel {
       $stmt = $this->connection->prepare('SELECT * FROM users WHERE name = :name AND password = :password');
       $stmt->execute(array('name' => $username, 'password' => $password));
 
-      var_dump($stmt->rowCount());
+      //var_dump($stmt->rowCount());
 
       if ($stmt->rowCount() > 0) {
         return true;
