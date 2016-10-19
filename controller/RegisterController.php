@@ -22,17 +22,12 @@ class RegisterController {
 
   public function checkInput() {
     if ($this->v->userNameExist() && $this->v->passwordExist()) {
-        if ($this->v->getUserName() == "") {
-          $this->message = "Username is missing";
+        if (strlen($this->v->getUserName()) < 3) {
+          $this->message = "Username has too few characters, at least 3 characters.";
         }
 
-        else if ($this->v->getPassword() == "") {
-          $this->message = "Password is missing";
-        }
-
-        else {
-          //LOGIN FAILED
-          $this->message = "Wrong name or password";
+        else if (strlen($this->v->getPassword()) < 6) {
+          $this->message = "Password has too few characters, at least 6 characters.";
         }
     }
   }
