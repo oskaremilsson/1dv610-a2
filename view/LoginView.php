@@ -7,12 +7,23 @@ class LoginView {
 	private static $name = 'LoginView::UserName';
 	private static $password = 'LoginView::Password';
 	private static $cookieName = 'LoginView::CookieName';
-	private static $cookiePassword = 'LoginView::CookiePassword';
+	//private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 
-	private $_PASSWORD = "Password";
-	private $_USERNAME = "Admin";
+	//Cookie settings
+	private static $daysInSeconds = 86400;
+	private static $daysInMonth = 30;
+	private $cookieLifeTime;
+	private $cookiePassword;
+	private static $cookiePasswordCookieName = "LoginView::CookiePassword";
+	private static $isLoggedInCookieName = "LoginView::isLoggedIn";
+	private static $flashMessageCookieName = "LoginView::flashMessage";
+
+	function __construct() {
+		$this->cookieLifeTime = time() + (self::$daysInSeconds * self::$daysInMonth);
+		$this->cookiePassword = md5("test");
+	}
 
 	/**
 	 * Create HTTP response
@@ -23,15 +34,9 @@ class LoginView {
 	 */
 	public function response($isLoggedIn, $message) {
 		$name = "";
-		if (isset($_POST[self::$name])) {
-			$name = $_POST[self::$name];
+		if ($this->userNameExist()) {
+			$name = $this->getUserName();
 		}
-
-		/*if(isset($_POST[self::$logout])){
-			$this->logout();
-			$isLoggedIn = false;
-			$message = "Bye bye!";
-		}*/
 
 		if ($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML($message);
@@ -87,6 +92,93 @@ class LoginView {
 		';
 	}
 
+	public function isUserLoggingIn() {
+		return isset($_POST[self::$login]);
+	}
+
+	public function isUserLoggingOut() {
+		return isset($_POST[self::$logout]);
+	}
+
+	public function userNameExist() {
+		return isset($_POST[self::$name]);
+	}
+	public function getUserName() {
+		return $_POST[self::$name];
+	}
+
+	public function passwordExist() {
+		return isset($_POST[self::$password]);
+	}
+	public function getPassword() {
+		return $_POST[self::$password];
+	}
+
+	public function keepStatusExist() {
+		return isset($_POST[self::$keep]);
+	}
+	public function keepIsActivated() {
+		return $_POST[self::$keep];
+	}
+
+	public function setCookiePasswordCookie() {
+		setcookie(self::$cookiePasswordCookieName, $this->cookiePassword, $this->cookieLifeTime, "/");
+	}
+
+	public function cookiePassWordCookieExist() {
+		return isset($_COOKIE[self::$cookiePasswordCookieName]);
+	}
+	public function getCookiePasswordCookie() {
+		return $_COOKIE[self::$cookiePasswordCookieName];
+	}
+
+	public function isLoggedInCookieExist() {
+		return isset($_COOKIE[self::$isLoggedInCookieName]);
+	}
+	public function getIsLoggedInCookie() {
+		return $_COOKIE[self::$isLoggedInCookieName];
+	}
+	public function setIsLoggedInCookie($bool) {
+		//setcookie("isLoggedIn", true, time() + (86400 * 30), "/");
+		//setcookie("flashMessage", "Welcome back with cookie" , time() + (86400 * 30), "/");
+		if ($bool) {
+			setcookie(self::$isLoggedInCookieName, $bool, $this->cookieLifeTime, "/");
+			//only set flashmessage cookie when logging in
+			setcookie(self::$flashMessageCookieName, "Welcome back with cookie" , $this->cookieLifeTime, "/");
+		}
+		else {
+			//loggin out, set the isLoggedInCookie to false and -1 time
+			setcookie(self::$isLoggedInCookieName, $bool, time()-1, "/");
+		}
+	}
+
+	public function isLoggedInSessionExist() {
+		return isset($_SESSION[self::$isLoggedInCookieName]);
+	}
+	public function getIsLoggedInSession() {
+		//TODO: find a better solution
+		if ($this->isLoggedInSessionExist()) {
+			return $_SESSION[self::$isLoggedInCookieName];
+		}
+		else {
+			return null;
+		}
+	}
+	public function setIsLoggedInSession($bool) {
+		$_SESSION[self::$isLoggedInCookieName] = $bool;
+	}
+
+	public function flashMessageCookieExist() {
+		return isset($_COOKIE[self::$flashMessageCookieName]);
+	}
+	public function getFlashMessageCookie() {
+		return $_COOKIE[self::$flashMessageCookieName];
+	}
+	public function clearFlashMessageCookie() {
+		setcookie(self::$flashMessageCookieName, false , time()-1);
+	}
+
+	/*
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
 	public function getUserNameID() {
 		//RETURN REQUEST VARIABLE: USERNAME
@@ -109,18 +201,6 @@ class LoginView {
 	public function getKeepID() {
 		//RETURN REQUEST VARIABLE: PASSWORD
 		return self::$keep;
-	}
-
-	/*private function checkAuthentication($username, $password) {
-		$correct = false;
-		$_SESSION["isLoggedIn"] = false;
-
-		if ($username == $this->_USERNAME && $password == $this->_PASSWORD) {
-			$correct = true;
-			$_SESSION["isLoggedIn"] = true;
-		}
-
-		return $correct;
 	}*/
 
 }

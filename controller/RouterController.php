@@ -6,48 +6,45 @@ require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
 require_once('model/DatabaseModel.php');
 require_once('controller/LoginController.php');
+require_once('settings.php');
 
 class RouterController {
-  private $cookiePassword;
+  //private $cookiePassword;
   private $isLoggedIn = false;
   private $message = "";
   private $loginView;
   private $dateTimeView;
   private $layoutView;
   private $LoginController;
-  //private $database;
 
   function __construct($database) {
-    $daysInSeconds = 86400;
-    $daysInMonth = 30;
-    $cookieLifeTime = time() + ($daysInSeconds * $daysInMonth);
-
-    //CREATE OBJECTS OF THE VIEWS
     $this->loginView = new \view\LoginView();
     $this->dateTimeView = new \view\DateTimeView();
     $this->layoutView = new \view\LayoutView();
     $this->loginController = new \controller\LoginController($this->loginView, $database);
-    //$this->database = $database;
-    $cookiePassword = md5("test");
 
-    //$this->database->connectToDatabase();
-
-    setcookie("LoginView::CookiePassword", $cookiePassword, $cookieLifeTime, "/");
+    //setcookie("LoginView::CookiePassword", $cookiePassword, $cookieLifeTime, "/");
+    $this->loginView->setCookiePasswordCookie();
   }
 
   public function route() {
     $this->checkLoggedInStatus();
-
     $this->checkCookiePassword();
+
+    if ($this->loginView->isUserLoggingIn()) {
+      //route to login
+      $this->isLoggedIn = $this->loginController->login();
+      $this->message = $this->loginController->getMessage();
+    }
 
     $response = $this->loginView->response($this->isLoggedIn, $this->message);
     $this->layoutView->render($this->isLoggedIn, $this->loginView, $this->dateTimeView, $this->message, $response);
   }
 
   private function checkCookiePassword() {
-    if(isset($_COOKIE['LoginView::CookiePassword'])) {
-       if ($_COOKIE['LoginView::CookiePassword'] != md5("test")) {
-         $this->Logincontroller->logout();
+    if($this->loginView->cookiePassWordCookieExist()) {
+       if ($this->loginView->getCookiePasswordCookie() != md5("test")) {
+         $this->loginController->logout();
          $this->isLoggedIn = false;
          $this->message = "Wrong information in cookies";
        }
@@ -55,12 +52,12 @@ class RouterController {
   }
 
   private function checkLoggedInStatus() {
-    if (isset($_COOKIE['isLoggedIn'])) {
+    if ($this->loginView->isLoggedInCookieExist()) {
       //cookie with isLoggedIn exist
-      $this->isLoggedIn = $_COOKIE['isLoggedIn'];
+      $this->isLoggedIn = $this->loginView->getIsLoggedInCookie();
       $this->loginController->handleFlashMessage();
 
-      if ($this->loginController->isRequest($this->loginView->getLogoutID())) {
+      if ($this->loginView->isUserLoggingOut()) {
         //logout form sent, handle it
         $this->loginController->logout();
         $this->isLoggedIn = false;
@@ -68,10 +65,10 @@ class RouterController {
 
       $this->message = $this->loginController->getMessage();
     }
-    else if (isset($_SESSION["isLoggedIn"])) {
-      $this->isLoggedIn = $_SESSION["isLoggedIn"];
+    else if ($this->loginView->isLoggedInSessionExist()) {
+      $this->isLoggedIn = $this->loginView->getIsLoggedInSession();
 
-      if ($this->loginController->isRequest($this->loginView->getLogoutID())) {
+      if ($this->loginView->isUserLoggingOut()) {
         //logout form sent, handle it
         $this->loginController->logout();
         $this->isLoggedIn = false;
@@ -79,11 +76,11 @@ class RouterController {
       }
     }
     else {
-      if ($this->loginController->isRequest($this->loginView->getLoginID())) {
+      /*if ($this->loginController->isRequest($this->loginView->getLoginID())) {
         //login form sent, handle it
         $this->isLoggedIn = $this->loginController->login();
         $this->message = $this->loginController->getMessage();
-      }
+      }*/
     }
   }
 }
