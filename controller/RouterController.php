@@ -23,7 +23,6 @@ class RouterController {
     $this->layoutView = new \view\LayoutView();
     $this->loginController = new \controller\LoginController($this->loginView, $database);
 
-    //setcookie("LoginView::CookiePassword", $cookiePassword, $cookieLifeTime, "/");
     $this->loginView->setCookiePasswordCookie();
   }
 
@@ -74,13 +73,6 @@ class RouterController {
         $this->isLoggedIn = false;
         $this->message = $this->loginController->getMessage();
       }
-    }
-    else {
-      /*if ($this->loginController->isRequest($this->loginView->getLoginID())) {
-        //login form sent, handle it
-        $this->isLoggedIn = $this->loginController->login();
-        $this->message = $this->loginController->getMessage();
-      }*/
     }
   }
 }

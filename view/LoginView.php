@@ -181,29 +181,4 @@ class LoginView {
 		setcookie(self::$flashMessageCookieName, false , time()-1);
 	}
 
-	/*
-	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	public function getUserNameID() {
-		//RETURN REQUEST VARIABLE: USERNAME
-		return self::$name;
-	}
-
-	public function getUserPasswordID() {
-		//RETURN REQUEST VARIABLE: PASSWORD
-		return self::$password;
-	}
-
-	public function getLoginID() {
-		return self::$login;
-	}
-
-	public function getLogoutID() {
-		return self::$logout;
-	}
-
-	public function getKeepID() {
-		//RETURN REQUEST VARIABLE: PASSWORD
-		return self::$keep;
-	}*/
-
 }
