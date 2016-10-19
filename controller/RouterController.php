@@ -41,7 +41,7 @@ class RouterController {
         $password = $this->registerView->getPassword();
         if($this->registerController->registerNewUser($username, $password)) {
           //register sucess route to login with new username
-          $response = $this->loginView->responseNewUser($username);
+          $response = $this->loginView->responseNewUser("Registered new user.", $username);
         }
         else {
           $this->message = $this->registerController->getMessage();

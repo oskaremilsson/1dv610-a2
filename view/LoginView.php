@@ -51,8 +51,8 @@ class LoginView {
 /*
 Responde function to use when a new user is registred
 */
-	public function responseNewUser($name) {
-		$response = $this->generateLoginFormHTML("", $name);
+	public function responseNewUser($message, $name) {
+		$response = $this->generateLoginFormHTML($message, $name);
 		return $response;
 	}
 
