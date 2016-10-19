@@ -42,7 +42,7 @@ class RouterController {
       }
 
       $this->message = $this->registerController->getMessage();
-      $response = $this->registerView->response($this->message);
+      $response = $this->registerView->response($this->message, $username);
     }
     else {
       $this->checkLoggedInStatus();

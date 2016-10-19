@@ -30,8 +30,8 @@ class RegisterView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response($message) {
-		$response = $this->generateRegisterFormHTML($message);
+	public function response($message, $name = "") {
+		$response = $this->generateRegisterFormHTML($message, $name);
 		return $response;
 	}
 
@@ -40,17 +40,17 @@ class RegisterView {
 	* @param $message, String output message
 	* @return  void, BUT writes to standard output!
 	*/
-	private function generateRegisterFormHTML($message) {
+	private function generateRegisterFormHTML($message, $name) {
 		return '
 
-    <a href="/">Back to login</a>
+    <a href="?">Back to login</a>
 			<form method="post" >
 				<fieldset>
 					<legend>Register</legend>
 					<p id="' . self::$message . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" /><br>
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="'.$name.'" /><br>
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" /><br>
           <label for="' . self::$passwordRepeat . '">Repeat password :</label>
