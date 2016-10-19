@@ -46,6 +46,7 @@ class Logincontroller {
         $correct = true;
         $this->message = "Welcome";
         $this->handleKeep();
+        header("Location: /");
       }
     }
 
