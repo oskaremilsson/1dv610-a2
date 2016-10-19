@@ -33,6 +33,7 @@ class RouterController {
   }
 
   public function route() {
+    $username = "";
     if ($this->registerView->isUserRequestingRegister()) {
       if ($this->registerView->isUserSendingNewRegister()) {
         //new user posted, get the user from view
