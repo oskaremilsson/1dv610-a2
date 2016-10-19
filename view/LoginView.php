@@ -167,6 +167,9 @@ class LoginView {
 	public function setIsLoggedInSession($bool) {
 		$_SESSION[self::$isLoggedInCookieName] = $bool;
 	}
+	public function unsetIsLoggedInSession() {
+		unset($_SESSION[self::$isLoggedInCookieName]);
+	}
 
 	public function flashMessageCookieExist() {
 		return isset($_COOKIE[self::$flashMessageCookieName]);

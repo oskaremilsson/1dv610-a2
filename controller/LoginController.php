@@ -63,8 +63,10 @@ class Logincontroller {
   }
 
   public function logout() {
-    $session = $this->v->getIsLoggedInSession();
-    unset($session);
+    //$session = $this->v->getIsLoggedInSession();
+    //unset($session);
+    $this->v->unsetIsLoggedInSession();
+
     //setcookie("isLoggedIn", false , time()-1);
     $this->v->setIsLoggedInCookie(false);
     $this->message = "Bye bye!";
