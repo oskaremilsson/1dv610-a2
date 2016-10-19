@@ -48,4 +48,19 @@ class DatabaseModel {
     return false;
   }
 
+  public function registerNewUser($username, $password) {
+    try {
+      $sql = "INSERT INTO MyGuests (firstname, lastname, email)
+   VALUES ('John', 'Doe', 'john@example.com')";
+
+      $stmt = $this->connection->prepare('INSERT INTO users (name, password) VALUES (:name, :password)');
+      $stmt->execute(array('name' => $username, 'password' => $password));
+
+    } catch(\PDOException $e) {
+      return false;
+    }
+
+    return true;
+  }
+
 }

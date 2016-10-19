@@ -2,10 +2,12 @@
 namespace controller;
 
 require_once('view/LoginView.php');
+require_once('view/RegisterView.php');
 require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
 require_once('model/DatabaseModel.php');
 require_once('controller/LoginController.php');
+require_once('controller/RegisterController.php');
 require_once('settings.php');
 
 class RouterController {
@@ -13,30 +15,45 @@ class RouterController {
   private $isLoggedIn = false;
   private $message = "";
   private $loginView;
+  private $registerView;
   private $dateTimeView;
   private $layoutView;
-  private $LoginController;
+  private $loginController;
+  private $registerController;
 
   function __construct($database) {
     $this->loginView = new \view\LoginView();
+    $this->registerView = new \view\RegisterView();
     $this->dateTimeView = new \view\DateTimeView();
     $this->layoutView = new \view\LayoutView();
     $this->loginController = new \controller\LoginController($this->loginView, $database);
+    $this->registerController = new \controller\RegisterController($this->registerView, $database);
 
     $this->loginView->setCookiePasswordCookie();
   }
 
   public function route() {
-    $this->checkLoggedInStatus();
-    $this->checkCookiePassword();
-
-    if ($this->loginView->isUserLoggingIn()) {
-      //route to login
-      $this->isLoggedIn = $this->loginController->login();
-      $this->message = $this->loginController->getMessage();
+    if ($this->registerView->isUserRequestingRegister()) {
+      if ($this->registerView->isUserSendingNewRegister()) {
+        //new user posted, get the user from view
+        $username = $this->registerView->getUserName();
+        $password = $this->registerView->getPassword();
+        $this->registerController->registerNewUser($username, $password);
+      }
+      $response = $this->registerView->response($this->message);
     }
+    else {
+      $this->checkLoggedInStatus();
+      $this->checkCookiePassword();
 
-    $response = $this->loginView->response($this->isLoggedIn, $this->message);
+      if ($this->loginView->isUserLoggingIn()) {
+        //route to login
+        $this->isLoggedIn = $this->loginController->login();
+        $this->message = $this->loginController->getMessage();
+      }
+
+      $response = $this->loginView->response($this->isLoggedIn, $this->message);
+    }
     $this->layoutView->render($this->isLoggedIn, $this->loginView, $this->dateTimeView, $this->message, $response);
   }
 
